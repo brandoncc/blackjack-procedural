@@ -177,21 +177,15 @@ end
 
 def play_game
   while true
+    # initialize stats for new game
+    current_game= { player_hand: [], player_is_busted: false,
+                    player_hit_21: false, player_score: 0,
+                    dealer_hand: [], dealer_is_busted: false,
+                    dealer_score: 0 }
 
-    # initialize player's hand
-    player_hand = []
-    player_is_busted = false
-    player_hit_21 = false
-    player_score = 0
+    deal_cards(current_game[:player_hand], current_game[:dealer_hand])
 
-    # initialize dealer's hand
-    dealer_hand = []
-    dealer_is_busted = false
-    dealer_score = 0
-
-    deal_cards(player_hand, dealer_hand)
-
-    show_player_cards(player_hand)
+    show_player_cards(current_game[:player_hand])
 
     while true
       say('')
@@ -199,20 +193,20 @@ def play_game
 
       case gets.chomp.downcase
       when 'h', 'hit'
-        hit(player_hand)
+        hit(current_game[:player_hand])
 
-        show_player_cards(player_hand)
+        show_player_cards(current_game[:player_hand])
 
-        player_score = calculate_score(*player_hand)
+        current_game[:player_score] = calculate_score(*current_game[:player_hand])
 
         # if bust or 21, break and alert
-        if player_score > 21
+        if current_game[:player_score] > 21
           say_with_hashrocket('Oh no!  You busted!')
-          player_is_busted = true
+          current_game[:player_is_busted] = true
           break
-        elsif player_score == 21
+        elsif current_game[:player_score] == 21
           say_with_hashrocket('You hit 21, you win!!!!!')
-          player_hit_21 = true
+          current_game[:player_hit_21] = true
           break
         end
       when 's', 'stay'
@@ -223,15 +217,15 @@ def play_game
     end
 
     # only let dealer play if player did not bust
-    if !player_is_busted && !player_hit_21
+    if !current_game[:player_is_busted] && !current_game[:player_hit_21]
       while true
-        dealer_score = calculate_score(*dealer_hand)
+        current_game[:dealer_score] = calculate_score(*current_game[:dealer_hand])
 
-        if dealer_score < 17
-          hit(dealer_hand)
+        if current_game[:dealer_score] < 17
+          hit(current_game[:dealer_hand])
         else
-          if dealer_score > 21
-            dealer_is_busted = true
+          if current_game[:dealer_score] > 21
+            current_game[:dealer_is_busted] = true
             say_with_hashrocket('Good news!  The dealer busted, you win!')
           end
           break
@@ -239,22 +233,22 @@ def play_game
       end
 
       say_with_hashrocket("Here are the dealer's final cards:")
-      show_cards(dealer_hand)
+      show_cards(current_game[:dealer_hand])
     end
 
     # calculate scores one last time for use in messages
-    player_score = calculate_score(*player_hand)
-    dealer_score = calculate_score(*dealer_hand)
+    current_game[:player_score] = calculate_score(*current_game[:player_hand])
+    current_game[:dealer_score] = calculate_score(*current_game[:dealer_hand])
 
     # compare scores to figure out a win/loss/push for player
     # update player's scorecard
-    if player_is_busted
+    if current_game[:player_is_busted]
       @score_card[:losses] += 1
-    elsif dealer_is_busted || player_hit_21
+    elsif current_game[:dealer_is_busted] || current_game[:player_hit_21]
       @score_card[:wins] += 1
     else
       say('')
-      case player_score <=> dealer_score
+      case current_game[:player_score] <=> current_game[:dealer_score]
       when 1
         say_with_hashrocket('You won!')
         @score_card[:wins] += 1
@@ -269,11 +263,11 @@ def play_game
     end
 
     # show player game result
-    display_scores(player_score, dealer_score)
+    display_scores(current_game[:player_score], current_game[:dealer_score])
     say('')
     display_stats
 
-    discard_cards(player_hand, dealer_hand)
+    discard_cards(current_game[:player_hand], current_game[:dealer_hand])
 
     break if not play_again?
   end
