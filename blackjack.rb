@@ -175,6 +175,12 @@ def play_again?
     end
 end
 
+def display_game_result(last_game)
+  display_scores(last_game[:player_score], last_game[:dealer_score])
+  say('')
+  display_stats
+end
+
 def play_game
   while true
     # initialize stats for new game
@@ -262,10 +268,7 @@ def play_game
       say('')
     end
 
-    # show player game result
-    display_scores(current_game[:player_score], current_game[:dealer_score])
-    say('')
-    display_stats
+    display_game_result(current_game)
 
     discard_cards(current_game[:player_hand], current_game[:dealer_hand])
 
