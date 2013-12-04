@@ -206,6 +206,8 @@ def compute_winner(game)
 end
 
 def players_turn(game)
+  show_player_cards(game[:player_hand])
+
   while true
     say('')
     say_with_hashrocket('Would you like to hit (h) or stay (s)?')
@@ -268,8 +270,6 @@ def play_game
                     dealer_score: 0 }
 
     deal_cards(current_game[:player_hand], current_game[:dealer_hand])
-
-    show_player_cards(current_game[:player_hand])
 
     players_turn(current_game)
 
