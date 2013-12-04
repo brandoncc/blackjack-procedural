@@ -42,33 +42,35 @@ def say_with_hashrocket(msg)
 end
 
 def show_rules
-  say('')
-  say_with_hashrocket('Here is a quick overview:')
-  say('')
-  say('Objective: Accumulate as as close to 21 points as possble, without')
-  say('           going over.')
-  say('')
-  say('How this is achieved:')
-  say('  1. You and the dealer are each dealt two cards.')
-  say('  2. You are shown your cards.')
-  say('  3. You can choose to "stay" or "hit" (receive another card).')
-  say('  4. You are repeatedly given this choice, until one of the following is')
-  say('     true:')
-  say('       a: You choose to stay')
-  say('       b: You have 21 points')
-  say('       c: You go over 21 points, or "bust"')
-  say('')
-  say('Scoring:')
-  say('  Cards are scored as follows:')
-  say('    Ace: 1 or 11 points.  If 11 points makes you bust, the Ace reverts')
-  say('         to 1 point')
-  say('    2-10: scored as face value')
-  say('    Face cards (J, Q, K): 10 points each')
-  say('')
-  say('Tip: If you have an Ace in your hand which is being calculated as 11')
-  say('     points, and you are not sure whether you should hit or not, hit!')
-  say('')
-  say('Press any key to continue')
+  puts <<-RULES.gsub(/^\s*\|/, '')
+    |
+    |=> Here is a quick overview:
+    |
+    |Objective: Accumulate as as close to 21 points as possble, without
+    |           going over.
+    |
+    |How this is achieved:
+    |  1. You and the dealer are each dealt two cards.
+    |  2. You are shown your cards.
+    |  3. You can choose to "stay" or "hit" (receive another card).
+    |  4. You are repeatedly given this choice, until one of the following is
+    |     true:
+    |       a: You choose to stay
+    |       b: You have 21 points
+    |       c: You go over 21 points, or "bust"
+    |
+    |Scoring:
+    |  Cards are scored as follows:
+    |    Ace: 1 or 11 points.  If 11 points makes you bust, the Ace reverts
+    |         to 1 point
+    |    2-10: scored as face value
+    |    Face cards (J, Q, K): 10 points each
+    |
+    |Tip: If you have an Ace in your hand which is being calculated as 11
+    |     points, and you are not sure whether you should hit or not, hit!
+    |
+    |Press any key to continue
+  RULES
 
   # after showing rules, wait for input to continue
   gets
