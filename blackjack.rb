@@ -229,6 +229,7 @@ def players_turn(game)
         break
       end
     when 's', 'stay'
+      game[:player_score] = calculate_score(*game[:player_hand])
       break
     else
       say_with_hashrocket('Sorry, please enter one of the following: h, hit, s or stay')
