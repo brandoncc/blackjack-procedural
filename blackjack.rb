@@ -47,6 +47,7 @@ end
 #   compare scores to figure out a win/loss/push for player
 #   show player game result
 #   update player's scorecard
+#   discard cards
 #   Ask if player would like to play again. If not, show scorecard and exit.
 
 # deal_cards
