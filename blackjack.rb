@@ -205,6 +205,59 @@ def compute_winner(game)
   end
 end
 
+def players_turn(game)
+  while true
+    say('')
+    say_with_hashrocket('Would you like to hit (h) or stay (s)?')
+
+    case gets.chomp.downcase
+    when 'h', 'hit'
+      hit(game[:player_hand])
+
+      show_player_cards(game[:player_hand])
+
+      game[:player_score] = calculate_score(*game[:player_hand])
+
+      # if bust or 21, break and alert
+      if game[:player_score] > 21
+        say_with_hashrocket('Oh no!  You busted!')
+        game[:player_is_busted] = true
+        break
+      elsif game[:player_score] == 21
+        say_with_hashrocket('You hit 21, you win!!!!!')
+        game[:player_hit_21] = true
+        break
+      end
+    when 's', 'stay'
+      break
+    else
+      say_with_hashrocket('Sorry, please enter one of the following: h, hit, s or stay')
+    end
+  end
+end
+
+def dealers_turn(game)
+  # only let dealer play if player did not bust
+  if !game[:player_is_busted] && !game[:player_hit_21]
+    while true
+      game[:dealer_score] = calculate_score(*game[:dealer_hand])
+
+      if game[:dealer_score] < 17
+        hit(game[:dealer_hand])
+      else
+        if game[:dealer_score] > 21
+          game[:dealer_is_busted] = true
+          say_with_hashrocket('Good news!  The dealer busted, you win!')
+        end
+        break
+      end
+    end
+
+    say_with_hashrocket("Here are the dealer's final cards:")
+    show_cards(game[:dealer_hand])
+  end
+end
+
 def play_game
   while true
     # initialize stats for new game
@@ -217,58 +270,9 @@ def play_game
 
     show_player_cards(current_game[:player_hand])
 
-    while true
-      say('')
-      say_with_hashrocket('Would you like to hit (h) or stay (s)?')
+    players_turn(current_game)
 
-      case gets.chomp.downcase
-      when 'h', 'hit'
-        hit(current_game[:player_hand])
-
-        show_player_cards(current_game[:player_hand])
-
-        current_game[:player_score] = calculate_score(*current_game[:player_hand])
-
-        # if bust or 21, break and alert
-        if current_game[:player_score] > 21
-          say_with_hashrocket('Oh no!  You busted!')
-          current_game[:player_is_busted] = true
-          break
-        elsif current_game[:player_score] == 21
-          say_with_hashrocket('You hit 21, you win!!!!!')
-          current_game[:player_hit_21] = true
-          break
-        end
-      when 's', 'stay'
-        break
-      else
-        say_with_hashrocket('Sorry, please enter one of the following: h, hit, s or stay')
-      end
-    end
-
-    # only let dealer play if player did not bust
-    if !current_game[:player_is_busted] && !current_game[:player_hit_21]
-      while true
-        current_game[:dealer_score] = calculate_score(*current_game[:dealer_hand])
-
-        if current_game[:dealer_score] < 17
-          hit(current_game[:dealer_hand])
-        else
-          if current_game[:dealer_score] > 21
-            current_game[:dealer_is_busted] = true
-            say_with_hashrocket('Good news!  The dealer busted, you win!')
-          end
-          break
-        end
-      end
-
-      say_with_hashrocket("Here are the dealer's final cards:")
-      show_cards(current_game[:dealer_hand])
-    end
-
-    # calculate scores one last time for use in messages
-    current_game[:player_score] = calculate_score(*current_game[:player_hand])
-    current_game[:dealer_score] = calculate_score(*current_game[:dealer_hand])
+    dealers_turn(current_game)
 
     compute_winner(current_game)
 
