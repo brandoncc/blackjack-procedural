@@ -183,7 +183,6 @@ def play_game
       when 'h', 'hit'
         hit(player_hand)
 
-        say_with_hashrocket('Here are your cards: ')
         show_player_cards(player_hand)
 
         player_score = calculate_score(*player_hand)
