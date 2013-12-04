@@ -45,8 +45,7 @@ while @player_name =~ /^\s*$/
   @player_name = gets.chomp
 end
 
-# Ask if player knows rules. If not, show them.
-say_with_hashrocket('Do you know how to play blackjack?  If not, I can teach you!')
+say("Hello, #{@player_name}")
 
 def show_rules
   say('')
@@ -74,10 +73,24 @@ def show_rules
   say('')
   say('Tip: If you have an Ace in your hand which is being calculated as 11')
   say('     points, and you are not sure whether you should hit or not, hit!')
+  say('')
   say('Press any key to continue')
 
   # after showing rules, wait for input to continue
   gets
+end
+
+while true
+  # Ask if player knows rules. If not, show them.
+  say_with_hashrocket('Do you know how to play blackjack?  If not, I can teach you!')
+  case gets.chomp.downcase
+  when 'y', 'yes'
+    say('Great, lets get started!')
+    break
+  when 'n', 'no'
+    show_rules
+    break
+  end
 end
 
 # start a game
