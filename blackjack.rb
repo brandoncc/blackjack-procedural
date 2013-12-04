@@ -294,6 +294,20 @@ def greet_player
   say("Hello, #{@player_name}")
 end
 
+def ask_if_player_knows_rules
+  while true
+    say_with_hashrocket('Do you know how to play blackjack?  If not, I can teach you!')
+    case gets.chomp.downcase
+    when 'y', 'yes'
+      say('Great, lets get started!')
+      break
+    when 'n', 'no'
+      show_rules
+      break
+    end
+  end
+end
+
 # Initialize deck and gather player intel.
 build_deck(5)
 
@@ -301,16 +315,6 @@ shuffle_deck
 
 greet_player
 
-while true
-  say_with_hashrocket('Do you know how to play blackjack?  If not, I can teach you!')
-  case gets.chomp.downcase
-  when 'y', 'yes'
-    say('Great, lets get started!')
-    break
-  when 'n', 'no'
-    show_rules
-    break
-  end
-end
+ask_if_player_knows_rules
 
 play_game
