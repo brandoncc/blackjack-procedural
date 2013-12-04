@@ -157,8 +157,26 @@ def calculate_score(*cards)
   score
 end
 
+def play_again?
+  while true
+      say('')
+      say_with_hashrocket('Would you like to play again?')
+
+      case gets.chomp.downcase
+      when 'y', 'yes'
+        say("Ok, let's play again!")
+        return true
+      when 'n', 'no'
+        say("Let's play again soon, #{@player_name}!")
+        return false
+      else
+        say('Sorry, Please enter one of the following: y, yes, n or no')
+      end
+    end
+end
+
 def play_game
-    while true
+  while true
 
     # initialize player's hand
     player_hand = []
@@ -257,21 +275,7 @@ def play_game
 
     discard_cards(player_hand, dealer_hand)
 
-    while true
-      say('')
-      say_with_hashrocket('Would you like to play again?')
-
-      case gets.chomp.downcase
-      when 'y', 'yes'
-        say("Ok, let's play again!")
-        break
-      when 'n', 'no'
-        say("Let's play again soon, #{@player_name}!")
-        return
-      else
-        say('Sorry, Please enter one of the following: y, yes, n or no')
-      end
-    end
+    break if not play_again?
   end
 end
 
