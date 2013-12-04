@@ -285,17 +285,21 @@ def play_game
   end
 end
 
+def greet_player
+  while @player_name =~ /^\s*$/
+    say_with_hashrocket('Hello, what is your name?')
+    @player_name = gets.chomp
+  end
+
+  say("Hello, #{@player_name}")
+end
+
 # Initialize deck and gather player intel.
 build_deck(5)
 
 shuffle_deck
 
-while @player_name =~ /^\s*$/
-  say_with_hashrocket('Hello, what is your name?')
-  @player_name = gets.chomp
-end
-
-say("Hello, #{@player_name}")
+greet_player
 
 while true
   say_with_hashrocket('Do you know how to play blackjack?  If not, I can teach you!')
