@@ -1,8 +1,34 @@
 # inititialize player's name
+@player_name = ''
+
 # initialize player's scorecard
+@score_card = { wins: 0, losses: 0, pushes: 0 }
+
 # initialize deck
+@deck = []
+
+def build_deck(deck_count)
+  deck_count.times do
+    ['Ace', '2', '3', '4', '5', '6', '7', '8',
+     '9', '10', 'Jack', 'Queen', 'King'].each do |value|
+      ['Clubs', 'Diamonds', 'Hearts', 'Spades'].each do |suit|
+        @deck << { suit: suit, value: value }
+      end
+    end
+  end
+end
+
+build_deck(5)
+
 # initialize discard pile
+@discard_pile = []
+
 # shuffle deck
+def shuffle_deck
+  @deck << @discard_pile.pop while !@discard_pile.size.zero?
+
+  @deck.shuffle!
+end
 
 # greet player
 # save player's name
