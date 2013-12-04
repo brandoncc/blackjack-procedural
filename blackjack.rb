@@ -267,7 +267,7 @@ def play_game
         say("Ok, let's play again!")
         break
       when 'n', 'no'
-        say("Let's play again soon!")
+        say("Let's play again soon, #{@player_name}!")
         return
       else
         say('Sorry, Please enter one of the following: y, yes, n or no')
