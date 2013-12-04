@@ -31,11 +31,11 @@ def shuffle_deck
 end
 
 def say(msg)
-  puts "    #{msg}"
+  puts "#{msg}"
 end
 
 def say_with_hashrocket(msg)
-  puts "  => #{msg}"
+  puts "=> #{msg}"
 end
 
 while @player_name =~ /^\s*$/
