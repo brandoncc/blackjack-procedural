@@ -1,3 +1,5 @@
+require 'pry'
+
 # inititialize player's name
 @player_name = ''
 
