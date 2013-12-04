@@ -181,6 +181,30 @@ def display_game_result(last_game)
   display_stats
 end
 
+def compute_winner(game)
+  # compare scores to figure out a win/loss/push for player
+  # update player's scorecard
+  if game[:player_is_busted]
+    @score_card[:losses] += 1
+  elsif game[:dealer_is_busted] || game[:player_hit_21]
+    @score_card[:wins] += 1
+  else
+    say('')
+    case game[:player_score] <=> game[:dealer_score]
+    when 1
+      say_with_hashrocket('You won!')
+      @score_card[:wins] += 1
+    when -1
+      say_with_hashrocket('You lost, bummer!')
+      @score_card[:losses] += 1
+    else
+      say_with_hashrocket('This hand was a push, that is better than a loss!')
+      @score_card[:pushes] += 1
+    end
+    say('')
+  end
+end
+
 def play_game
   while true
     # initialize stats for new game
@@ -246,27 +270,7 @@ def play_game
     current_game[:player_score] = calculate_score(*current_game[:player_hand])
     current_game[:dealer_score] = calculate_score(*current_game[:dealer_hand])
 
-    # compare scores to figure out a win/loss/push for player
-    # update player's scorecard
-    if current_game[:player_is_busted]
-      @score_card[:losses] += 1
-    elsif current_game[:dealer_is_busted] || current_game[:player_hit_21]
-      @score_card[:wins] += 1
-    else
-      say('')
-      case current_game[:player_score] <=> current_game[:dealer_score]
-      when 1
-        say_with_hashrocket('You won!')
-        @score_card[:wins] += 1
-      when -1
-        say_with_hashrocket('You lost, bummer!')
-        @score_card[:losses] += 1
-      else
-        say_with_hashrocket('This hand was a push, that is better than a loss!')
-        @score_card[:pushes] += 1
-      end
-      say('')
-    end
+    compute_winner(current_game)
 
     display_game_result(current_game)
 
