@@ -25,7 +25,6 @@ def build_deck(deck_count)
   end
 end
 
-# shuffle deck
 def shuffle_deck
   @deck << @discard_pile.pop while !@discard_pile.size.zero?
 
@@ -75,7 +74,6 @@ def show_rules
   gets
 end
 
-# deal_cards
 def deal_cards(player, dealer)
   # deal two cards each to two users
   2.times do
@@ -93,8 +91,6 @@ def shuffle_if_necessary
   end
 end
 
-# show_cards(name, hand)
-#   display message containing the cards in hand and who they belong to
 def show_cards(hand)
   hand.each { |card| say("#{card[:value]} of #{card[:suit]}") }
   say("Current score:  #{calculate_score(*hand)}")
@@ -102,20 +98,13 @@ end
 
 # show only player's cards
 def show_player_cards(hand)
-  # show cards to player
   say_with_hashrocket('Here are your cards: ')
   show_cards(hand)
 end
 
-# hit(hand)
 def hit(hand)
-  #   If deck is empty, shuffle discard pile and return the cards to the deck.
   shuffle_if_necessary
-
-  #   Deal a card to receiving_player from the deck. (receiving_player << deck.pop)
   hand << @deck.shift
-
-  #   return updated hand (unless it is mutated automatically, need to test this)
 end
 
 def display_scores(player, dealer)
@@ -135,12 +124,10 @@ def discard_cards(*hands)
   end
 end
 
-# calculate_score(*hand)
 def calculate_score(*cards)
   number_cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
   face_cards = ['Jack', 'Queen', 'King']
 
-  # initialize score var
   score = 0
   aces_count = 0
 
@@ -165,13 +152,12 @@ def calculate_score(*cards)
     end
   end
 
-  # return score
   score
 end
 
-# play_game
 def play_game
     while true
+
     # initialize player's hand
     player_hand = []
     player_is_busted = false
@@ -183,31 +169,24 @@ def play_game
     dealer_is_busted = false
     dealer_score = 0
 
-    # deal cards
     deal_cards(player_hand, dealer_hand)
 
-    # will be used for the main game loop
-    # keep_playing = true
-
-    # show cards to player
     show_player_cards(player_hand)
 
     while true
       say('')
-      # ask hit/stay until stay, 21 or bust
       say_with_hashrocket('Would you like to hit (h) or stay (s)?')
 
       case gets.chomp.downcase
       when 'h', 'hit'
         hit(player_hand)
 
-        # show updated cards to player
         say_with_hashrocket('Here are your cards: ')
         show_player_cards(player_hand)
 
         player_score = calculate_score(*player_hand)
 
-        # if bust, break and alert
+        # if bust or 21, break and alert
         if player_score > 21
           say_with_hashrocket('Oh no!  You busted!')
           player_is_busted = true
@@ -226,8 +205,6 @@ def play_game
 
     # only let dealer play if player did not bust
     if !player_is_busted && !player_hit_21
-      #   hit dealer until points are > 17 (unless player hit 21), show cards in
-      #     between
       while true
         dealer_score = calculate_score(*dealer_hand)
 
@@ -272,15 +249,13 @@ def play_game
       say('')
     end
 
-    #   show player game result
+    # show player game result
     display_scores(player_score, dealer_score)
     say('')
     display_stats
 
-    #   discard cards
     discard_cards(player_hand, dealer_hand)
 
-    # Ask if player would like to play again. If not, show scorecard and exit.
     while true
       say('')
       say_with_hashrocket('Would you like to play again?')
@@ -305,16 +280,13 @@ build_deck(5)
 shuffle_deck
 
 while @player_name =~ /^\s*$/
-  # greet player
   say_with_hashrocket('Hello, what is your name?')
-  # save player's name
   @player_name = gets.chomp
 end
 
 say("Hello, #{@player_name}")
 
 while true
-  # Ask if player knows rules. If not, show them.
   say_with_hashrocket('Do you know how to play blackjack?  If not, I can teach you!')
   case gets.chomp.downcase
   when 'y', 'yes'
@@ -326,5 +298,4 @@ while true
   end
 end
 
-# start a game
 play_game
